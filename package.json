@@ -1,6 +1,6 @@
 {
   "name": "justtshtml",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Dependency-free TypeScript HTML5 parser (browser + Node.js + Bun). TypeScript port of justjshtml / JustHTML, targeting full html5lib-tests conformance.",
   "keywords": [
     "browser",
