@@ -1,0 +1,64 @@
+{
+  "name": "justtshtml",
+  "version": "0.0.1",
+  "description": "Dependency-free TypeScript HTML5 parser (browser + Node.js + Bun). TypeScript port of justjshtml / JustHTML, targeting full html5lib-tests conformance.",
+  "homepage": "https://github.com/jandira-tech/justtshtml#readme",
+  "bugs": {
+    "url": "https://github.com/jandira-tech/justtshtml/issues"
+  },
+  "license": "MIT",
+  "author": "Arthur Souza Rodrigues <arthur@jandira.tech>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jandira-tech/justtshtml.git"
+  },
+  "keywords": [
+    "html",
+    "html5",
+    "parser",
+    "html5lib",
+    "tokenizer",
+    "css-selector",
+    "markdown",
+    "dom",
+    "typescript"
+  ],
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack",
+    "dev": "vp pack --watch",
+    "test": "vp test",
+    "check": "vp check",
+    "test:smoke": "bun run scripts/smoke.ts",
+    "test:selector": "bun run scripts/run-selector-tests.ts",
+    "test:stream": "bun run scripts/run-stream-tests.ts",
+    "test:markdown": "bun run scripts/run-markdown-tests.ts",
+    "test:encoding": "bun run scripts/run-encoding-tests.ts",
+    "test:tokenizer": "bun run scripts/run-tokenizer-tests.ts",
+    "test:tree": "bun run scripts/run-tree-construction-tests.ts",
+    "test:serializer": "bun run scripts/run-serializer-tests.ts",
+    "test:html5lib": "bun run scripts/smoke.ts && bun run scripts/run-selector-tests.ts && bun run scripts/run-stream-tests.ts && bun run scripts/run-markdown-tests.ts && bun run scripts/run-encoding-tests.ts && bun run scripts/run-tokenizer-tests.ts && bun run scripts/run-tree-construction-tests.ts && bun run scripts/run-serializer-tests.ts",
+    "coverage": "c8 --include 'src/**' --exclude 'src/entities-data.ts' --reporter=text-summary --reporter=text --reporter=html bash -c 'tsx scripts/smoke.ts > /dev/null && tsx scripts/run-selector-tests.ts > /dev/null && tsx scripts/run-stream-tests.ts > /dev/null && tsx scripts/run-markdown-tests.ts > /dev/null && tsx scripts/run-encoding-tests.ts > /dev/null && tsx scripts/run-tokenizer-tests.ts > /dev/null && tsx scripts/run-tree-construction-tests.ts > /dev/null && tsx scripts/run-serializer-tests.ts > /dev/null'",
+    "prepublishOnly": "vp run build"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@typescript/native-preview": "7.0.0-dev.20260328.1",
+    "@vitest/coverage-v8": "^4.1.5",
+    "bumpp": "^11.0.1",
+    "c8": "^11.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "vite-plus": "^0.1.14"
+  }
+}

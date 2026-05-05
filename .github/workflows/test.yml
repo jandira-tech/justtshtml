@@ -1,0 +1,39 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install
+
+      - name: Unit tests (vp test)
+        run: bun run test
+
+      - name: Dependency-free conformance scripts
+        run: |
+          bun run scripts/smoke.ts
+          bun run scripts/run-selector-tests.ts
+          bun run scripts/run-stream-tests.ts
+          bun run scripts/run-markdown-tests.ts
+
+      - uses: actions/checkout@v4
+        with:
+          repository: html5lib/html5lib-tests
+          path: html5lib-tests
+
+      - name: html5lib-tests conformance
+        run: |
+          bun run scripts/run-encoding-tests.ts
+          bun run scripts/run-tokenizer-tests.ts
+          bun run scripts/run-tree-construction-tests.ts
+          bun run scripts/run-serializer-tests.ts

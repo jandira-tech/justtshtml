@@ -1,0 +1,59 @@
+import { FragmentContext } from "./context.js";
+import { Tokenizer, TokenizerOpts } from "./tokenizer.js";
+import { TreeBuilder } from "./treebuilder.js";
+
+export interface ParseDocumentOptions {
+  fragmentContext?: FragmentContext | null;
+  iframeSrcdoc?: boolean;
+  collectErrors?: boolean;
+  tokenizerOpts?: TokenizerOpts | Record<string, unknown> | null;
+}
+
+export function parseDocument(html: any, options: ParseDocumentOptions = {}) {
+  const {
+    fragmentContext = null,
+    iframeSrcdoc = false,
+    collectErrors = false,
+    tokenizerOpts = null,
+  } = options;
+
+  const shouldCollect = Boolean(collectErrors);
+  const treeBuilder = new TreeBuilder(fragmentContext, iframeSrcdoc, shouldCollect);
+
+  const opts =
+    tokenizerOpts instanceof TokenizerOpts
+      ? new TokenizerOpts({
+          initialState: tokenizerOpts.initialState,
+          initialRawtextTag: tokenizerOpts.initialRawtextTag,
+          discardBom: tokenizerOpts.discardBom,
+          xmlCoercion: tokenizerOpts.xmlCoercion,
+        })
+      : new TokenizerOpts(tokenizerOpts || {});
+
+  // Match justhtml's fragment tokenizer state overrides.
+  if (
+    fragmentContext &&
+    (fragmentContext.namespace == null || fragmentContext.namespace === "html")
+  ) {
+    const tagName = (fragmentContext.tag_name || fragmentContext.tagName || "").toLowerCase();
+    if (tagName === "textarea" || tagName === "title") {
+      opts.initialState = Tokenizer.RCDATA;
+      opts.initialRawtextTag = tagName;
+    } else if (tagName === "style") {
+      opts.initialState = Tokenizer.RAWTEXT;
+      opts.initialRawtextTag = tagName;
+    } else if (tagName === "plaintext" || tagName === "script") {
+      opts.initialState = Tokenizer.PLAINTEXT;
+      opts.initialRawtextTag = null;
+    }
+  }
+
+  const tokenizer = new Tokenizer(treeBuilder, opts, { collectErrors: shouldCollect });
+  treeBuilder.tokenizer = tokenizer;
+
+  tokenizer.run(html || "");
+  const root = treeBuilder.finish();
+  const errors = [...tokenizer.errors, ...treeBuilder.errors];
+
+  return { root, errors, tokenizer, treeBuilder };
+}
