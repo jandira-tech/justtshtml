@@ -1,65 +1,65 @@
 name: CodeQL
 
 on:
-    push:
-        branches: [main]
-        paths:
-            - "**.ts"
-            - "**.tsx"
-            - "**.js"
-            - "**.mjs"
-            - "**.cjs"
-            - "package.json"
-            - "bun.lock"
-            - ".github/workflows/codeql.yml"
-    pull_request:
-        branches: [main]
-        paths:
-            - "**.ts"
-            - "**.tsx"
-            - "**.js"
-            - "**.mjs"
-            - "**.cjs"
-            - "package.json"
-            - "bun.lock"
-            - ".github/workflows/codeql.yml"
+  push:
+    branches: [main]
+    paths:
+      - "**.ts"
+      - "**.tsx"
+      - "**.js"
+      - "**.mjs"
+      - "**.cjs"
+      - "package.json"
+      - "bun.lock"
+      - ".github/workflows/codeql.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "**.ts"
+      - "**.tsx"
+      - "**.js"
+      - "**.mjs"
+      - "**.cjs"
+      - "package.json"
+      - "bun.lock"
+      - ".github/workflows/codeql.yml"
 
 permissions:
-    actions: read
-    contents: read
-    security-events: write
+  actions: read
+  contents: read
+  security-events: write
 
 jobs:
-    analyze:
-        name: Analyze (${{ matrix.language }})
-        runs-on: ubuntu-latest
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
 
-        strategy:
-            fail-fast: false
-            matrix:
-                language: [javascript-typescript]
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [javascript-typescript]
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-            - name: Initialize CodeQL
-              uses: github/codeql-action/init@v4
-              with:
-                  languages: ${{ matrix.language }}
-                  build-mode: none
-                  # Skip vendored fixtures, build output, and the html5lib-tests
-                  # submodule — none of them are first-party source.
-                  config: |
-                      paths-ignore:
-                          - tests/fixtures/**
-                          - html5lib-tests/**
-                          - dist/**
-                          - coverage/**
-                          - docs/**
-                          - src/entities-data.ts
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: none
+          # Skip vendored fixtures, build output, and the html5lib-tests
+          # submodule — none of them are first-party source.
+          config: |
+            paths-ignore:
+                - tests/fixtures/**
+                - html5lib-tests/**
+                - dist/**
+                - coverage/**
+                - docs/**
+                - src/entities-data.ts
 
-            - name: Perform CodeQL Analysis
-              uses: github/codeql-action/analyze@v4
-              with:
-                  category: "/language:${{ matrix.language }}"
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{ matrix.language }}"
