@@ -1,7 +1,21 @@
 {
   "name": "justtshtml",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Dependency-free TypeScript HTML5 parser (browser + Node.js + Bun). TypeScript port of justjshtml / JustHTML, targeting full html5lib-tests conformance.",
+  "keywords": [
+    "browser",
+    "css-selector",
+    "dom",
+    "esm",
+    "html",
+    "html5",
+    "html5lib",
+    "markdown",
+    "parser",
+    "tokenizer",
+    "treebuilder",
+    "typescript"
+  ],
   "homepage": "https://github.com/jandira-tech/justtshtml#readme",
   "bugs": {
     "url": "https://github.com/jandira-tech/justtshtml/issues"
@@ -12,21 +26,12 @@
     "type": "git",
     "url": "git+https://github.com/jandira-tech/justtshtml.git"
   },
-  "keywords": [
-    "html",
-    "html5",
-    "parser",
-    "html5lib",
-    "tokenizer",
-    "css-selector",
-    "markdown",
-    "dom",
-    "typescript"
-  ],
   "files": [
     "dist"
   ],
   "type": "module",
+  "sideEffects": false,
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": "./dist/index.mjs",
     "./package.json": "./package.json"
@@ -39,6 +44,13 @@
     "dev": "vp pack --watch",
     "test": "vp test",
     "check": "vp check",
+    "check:tsgo": "tsgo --noEmit",
+    "lint": "oxlint --type-aware --type-check",
+    "lint:fix": "oxlint --type-aware --type-check --fix",
+    "fmt": "oxfmt --check",
+    "fmt:fix": "oxfmt",
+    "attw": "attw --pack . --profile esm-only",
+    "publint": "publint",
     "test:smoke": "bun run scripts/smoke.ts",
     "test:selector": "bun run scripts/run-selector-tests.ts",
     "test:stream": "bun run scripts/run-stream-tests.ts",
@@ -49,16 +61,37 @@
     "test:serializer": "bun run scripts/run-serializer-tests.ts",
     "test:html5lib": "bun run scripts/smoke.ts && bun run scripts/run-selector-tests.ts && bun run scripts/run-stream-tests.ts && bun run scripts/run-markdown-tests.ts && bun run scripts/run-encoding-tests.ts && bun run scripts/run-tokenizer-tests.ts && bun run scripts/run-tree-construction-tests.ts && bun run scripts/run-serializer-tests.ts",
     "coverage": "c8 --include 'src/**' --exclude 'src/entities-data.ts' --reporter=text-summary --reporter=text --reporter=html bash -c 'tsx scripts/smoke.ts > /dev/null && tsx scripts/run-selector-tests.ts > /dev/null && tsx scripts/run-stream-tests.ts > /dev/null && tsx scripts/run-markdown-tests.ts > /dev/null && tsx scripts/run-encoding-tests.ts > /dev/null && tsx scripts/run-tokenizer-tests.ts > /dev/null && tsx scripts/run-tree-construction-tests.ts > /dev/null && tsx scripts/run-serializer-tests.ts > /dev/null'",
-    "prepublishOnly": "vp run build"
+    "docs": "typedoc src/index.ts",
+    "release:check": "bun run test && bun run test:html5lib && bun run publint && bun run attw",
+    "release": "bun run release:check && bumpp --commit \"release: v%s\" --tag \"v%s\" --push",
+    "release:publish": "npm publish --access public",
+    "prepublishOnly": "bun run build && bun run publint && bun run attw"
   },
   "devDependencies": {
-    "@types/node": "^25.5.0",
-    "@typescript/native-preview": "7.0.0-dev.20260328.1",
+    "@arethetypeswrong/cli": "^0.18.2",
+    "@types/node": "^25.6.0",
+    "@typescript/native-preview": "7.0.0-dev.20260504.1",
     "@vitest/coverage-v8": "^4.1.5",
     "bumpp": "^11.0.1",
     "c8": "^11.0.0",
+    "oxfmt": "^0.47.0",
+    "oxlint": "^1.62.0",
+    "publint": "^0.3.18",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.2",
-    "vite-plus": "^0.1.14"
+    "typedoc": "^0.28.19",
+    "typescript": "^6.0.3",
+    "vite-plus": "^0.1.20"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "bun@1.3.13",
+  "attw": {
+    "profile": "esm-only"
+  },
+  "bumpp": {
+    "files": [
+      "package.json"
+    ]
   }
 }

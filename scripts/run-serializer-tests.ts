@@ -35,7 +35,12 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return value != null && typeof value === "object" && !Array.isArray(value);
 }
 
-function isTestSelected(fileRel: string, filename: string, index: number, specs: string[]): boolean {
+function isTestSelected(
+  fileRel: string,
+  filename: string,
+  index: number,
+  specs: string[],
+): boolean {
   if (!specs.length) return true;
 
   for (const spec of specs) {
@@ -43,7 +48,10 @@ function isTestSelected(fileRel: string, filename: string, index: number, specs:
       const [filePart, indicesPart] = spec.split(":", 2);
       if (!fileRel.includes(filePart) && !filename.includes(filePart)) continue;
       const wanted = new Set(
-        indicesPart.split(",").filter(Boolean).map((s) => Number.parseInt(s, 10)),
+        indicesPart
+          .split(",")
+          .filter(Boolean)
+          .map((s) => Number.parseInt(s, 10)),
       );
       return wanted.has(index);
     }
@@ -55,7 +63,10 @@ function isTestSelected(fileRel: string, filename: string, index: number, specs:
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
-  const testsDir = path.resolve(REPO_ROOT, args.testsDir || process.env.HTML5LIB_TESTS_DIR || "html5lib-tests");
+  const testsDir = path.resolve(
+    REPO_ROOT,
+    args.testsDir || process.env.HTML5LIB_TESTS_DIR || "html5lib-tests",
+  );
   const serializerDir = path.join(testsDir, "serializer");
 
   const entries = await readdir(serializerDir, { withFileTypes: true });

@@ -35,10 +35,15 @@ export class Node {
   }
 
   _assertCanAdopt(node: any) {
-    for (let current: any = this; current; current = current.parent) {
+    let current: any = this.parent;
+    if (this === node) {
+      throw new Error("Cannot insert a node into itself or one of its descendants");
+    }
+    while (current) {
       if (current === node) {
         throw new Error("Cannot insert a node into itself or one of its descendants");
       }
+      current = current.parent;
     }
   }
 

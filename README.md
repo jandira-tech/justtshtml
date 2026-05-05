@@ -1,5 +1,20 @@
 # justtshtml
 
+[![CI](https://github.com/jandira-tech/justtshtml/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/jandira-tech/justtshtml/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/jandira-tech/justtshtml/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/jandira-tech/justtshtml/actions/workflows/codeql.yml)
+[![codecov](https://codecov.io/gh/jandira-tech/justtshtml/branch/main/graph/badge.svg)](https://codecov.io/gh/jandira-tech/justtshtml)
+[![Known Vulnerabilities](https://snyk.io/test/npm/justtshtml/badge.svg)](https://snyk.io/test/npm/justtshtml)
+[![npm](https://badgen.net/npm/v/justtshtml?icon=npm)](https://www.npmjs.com/package/justtshtml)
+[![downloads](https://badgen.net/npm/dm/justtshtml)](https://www.npmjs.com/package/justtshtml)
+[![types](https://badgen.net/npm/types/justtshtml)](https://www.npmjs.com/package/justtshtml)
+[![bundle min](https://badgen.net/bundlephobia/min/justtshtml)](https://bundlephobia.com/package/justtshtml)
+[![bundle gzip](https://badgen.net/bundlephobia/minzip/justtshtml)](https://bundlephobia.com/package/justtshtml)
+[![tree-shakeable](https://badgen.net/bundlephobia/tree-shaking/justtshtml)](https://bundlephobia.com/package/justtshtml)
+[![dependencies](https://badgen.net/bundlephobia/dependency-count/justtshtml)](https://bundlephobia.com/package/justtshtml)
+[![license](https://badgen.net/badge/license/MIT/blue)](./LICENSE)
+[![node](https://badgen.net/badge/node/%3E%3D20/green)](./package.json)
+[![github](https://badgen.net/badge/icon/jandira-tech%2Fjusttshtml?icon=github&label)](https://github.com/jandira-tech/justtshtml)
+
 Dependency-free **TypeScript** HTML5 parser (browser + Node.js + Bun). TypeScript port of [justjshtml](https://github.com/simonw/justjshtml) by Simon Willison, itself a JavaScript port of the Python [JustHTML](https://github.com/EmilStenstrom/justhtml) by Emil Stenström.
 
 Primary goal: pass the full [html5lib-tests](https://github.com/html5lib/html5lib-tests) suite (tokenizer, tree-construction, encoding, serializer fixtures) using only plain TypeScript — no runtime dependencies.

@@ -385,7 +385,7 @@ function modeAfterHead(self: any, token: any): ModeHandlerResult {
       const attrs = token.attrs || {};
       for (const [name, value] of Object.entries(attrs)) {
         if (name === "type") {
-          inputType = String(value || "").toLowerCase();
+          inputType = String((value as string) || "").toLowerCase();
           break;
         }
       }
@@ -766,7 +766,7 @@ function handleBodyStartInput(self: any, token: Tag): ModeHandlerResult {
   const attrs = token.attrs || {};
   for (const [name, value] of Object.entries(attrs)) {
     if (name === "type") {
-      inputType = String(value || "").toLowerCase();
+      inputType = String((value as string) || "").toLowerCase();
       break;
     }
   }
@@ -973,7 +973,7 @@ const BODY_START_HANDLERS: Record<string, ModeHandler> = {
   xmp: handleBodyStartPlaintextXmp,
 };
 
-function handleBodyEndBody(self: any, token: Tag): ModeHandlerResult {
+function handleBodyEndBody(self: any, _token: Tag): ModeHandlerResult {
   if (self._in_scope("body")) self.mode = InsertionMode.AFTER_BODY;
   return null;
 }
@@ -1074,7 +1074,7 @@ function handleBodyEndBlock(self: any, token: Tag): ModeHandlerResult {
   return null;
 }
 
-function handleBodyEndTemplate(self: any, token: Tag): ModeHandlerResult {
+function handleBodyEndTemplate(self: any, _token: Tag): ModeHandlerResult {
   const hasTemplate = self.open_elements.some((node: any) => node.name === "template");
   if (!hasTemplate) return null;
   self._generate_implied_end_tags();
@@ -1319,7 +1319,7 @@ function modeInTable(self: any, token: any): ModeHandlerResult {
         const attrs = token.attrs || {};
         for (const [attrName, attrValue] of Object.entries(attrs)) {
           if (attrName === "type") {
-            inputType = String(attrValue || "").toLowerCase();
+            inputType = String((attrValue as string) || "").toLowerCase();
             break;
           }
         }
@@ -2709,13 +2709,15 @@ export class TreeBuilder {
       const root = this.document.children[0];
       const contextElem = this.fragment_context_element;
       if (contextElem && contextElem.parent === root) {
-        for (const child of [...contextElem.children]) {
+        while (contextElem.children.length > 0) {
+          const child = contextElem.children[0];
           contextElem.remove_child(child);
           root.append_child(child);
         }
         root.remove_child(contextElem);
       }
-      for (const child of [...root.children]) {
+      while (root.children.length > 0) {
+        const child = root.children[0];
         root.remove_child(child);
         this.document.append_child(child);
       }

@@ -79,15 +79,15 @@ export class JustHTML {
     }
   }
 
-  toText(options: any) {
+  toText(options?: any) {
     return this.root.toText(options);
   }
 
-  to_text(options: any) {
+  to_text(options?: any) {
     return this.toText(options);
   }
 
-  toHTML(options: any) {
+  toHTML(options?: any) {
     return this.root.toHTML(options);
   }
 

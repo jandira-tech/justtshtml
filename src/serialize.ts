@@ -150,7 +150,7 @@ function serializeStartTag(name: any, attrs: any) {
       }
 
       if (canUnquoteAttrValue(value)) {
-        const escaped = String(value).replaceAll("&", "&amp;");
+        const escaped = String(value as string).replaceAll("&", "&amp;");
         parts.push(" ", key, "=", escaped);
         continue;
       }
@@ -168,7 +168,7 @@ function serializeEndTag(name: any) {
   return `</${name}>`;
 }
 
-function nodeToHTML(node: any, indent = 0, indentSize = 2, pretty = true) {
+function nodeToHTML(node: any, indent = 0, indentSize = 2, pretty = true): string {
   const prefix = pretty ? " ".repeat(indent * indentSize) : "";
   const newline = pretty ? "\n" : "";
   const name = node.name;

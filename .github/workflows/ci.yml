@@ -1,0 +1,70 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+permissions:
+    contents: read
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+
+            - uses: actions/setup-node@v5
+              with:
+                  node-version: "20"
+
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest
+
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+
+            - name: Type-check
+              run: bunx tsc --noEmit
+
+            - name: Lint
+              run: bun run lint
+
+            - name: Format check
+              run: bun run fmt
+
+            - name: Unit tests with coverage
+              run: npx vitest run --coverage
+
+            - name: Upload coverage to Codecov
+              uses: codecov/codecov-action@v5
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
+                  files: ./coverage/lcov.info
+                  fail_ci_if_error: false
+                  verbose: true
+
+            - name: Checkout html5lib-tests
+              uses: actions/checkout@v5
+              with:
+                  repository: html5lib/html5lib-tests
+                  path: html5lib-tests
+
+            - name: Dependency-free conformance scripts
+              run: |
+                  bun run scripts/smoke.ts
+                  bun run scripts/run-selector-tests.ts
+                  bun run scripts/run-stream-tests.ts
+                  bun run scripts/run-markdown-tests.ts
+
+            - name: html5lib-tests conformance
+              run: |
+                  bun run scripts/run-encoding-tests.ts
+                  bun run scripts/run-tokenizer-tests.ts
+                  bun run scripts/run-tree-construction-tests.ts
+                  bun run scripts/run-serializer-tests.ts
+
+            - name: Build
+              run: bun run build

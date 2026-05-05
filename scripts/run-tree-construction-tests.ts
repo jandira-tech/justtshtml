@@ -64,7 +64,12 @@ function decodeEscapes(text: string): string {
   return out;
 }
 
-function isTestSelected(fileRel: string, filename: string, index: number, specs: string[]): boolean {
+function isTestSelected(
+  fileRel: string,
+  filename: string,
+  index: number,
+  specs: string[],
+): boolean {
   if (!specs.length) return true;
 
   for (const spec of specs) {
@@ -72,7 +77,10 @@ function isTestSelected(fileRel: string, filename: string, index: number, specs:
       const [filePart, indicesPart] = spec.split(":", 2);
       if (!fileRel.includes(filePart) && !filename.includes(filePart)) continue;
       const wanted = new Set(
-        indicesPart.split(",").filter(Boolean).map((s) => Number.parseInt(s, 10)),
+        indicesPart
+          .split(",")
+          .filter(Boolean)
+          .map((s) => Number.parseInt(s, 10)),
       );
       return wanted.has(index);
     }
@@ -197,7 +205,10 @@ function parseSingleTest(lines: string[]): TreeTest | null {
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
-  const testsDir = path.resolve(REPO_ROOT, args.testsDir || process.env.HTML5LIB_TESTS_DIR || "html5lib-tests");
+  const testsDir = path.resolve(
+    REPO_ROOT,
+    args.testsDir || process.env.HTML5LIB_TESTS_DIR || "html5lib-tests",
+  );
   const dir = path.join(testsDir, "tree-construction");
 
   const datFiles = await listDatFiles(dir);

@@ -2,7 +2,14 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { CharacterToken, CommentToken, Doctype, DoctypeToken, EOFToken, Tag } from "../src/tokens.js";
+import {
+  CharacterToken,
+  CommentToken,
+  Doctype,
+  DoctypeToken,
+  EOFToken,
+  Tag,
+} from "../src/tokens.js";
 import { Tokenizer, TokenizerOpts } from "../src/tokenizer.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -30,7 +37,9 @@ function parseArgs(argv: string[]): Args {
 }
 
 function unescapeUnicode(text: string): string {
-  return text.replaceAll(/\\u([0-9A-Fa-f]{4})/g, (_, hex) => String.fromCharCode(Number.parseInt(hex, 16)));
+  return text.replaceAll(/\\u([0-9A-Fa-f]{4})/g, (_, hex) =>
+    String.fromCharCode(Number.parseInt(hex, 16)),
+  );
 }
 
 function deepUnescape(val: any): any {
@@ -105,7 +114,7 @@ class RecordingSink {
 
   processToken(token: any): number {
     if (token instanceof Tag) {
-      this.tokens.push(new Tag(token.kind, token.name, { ...(token.attrs || {}) }, token.selfClosing));
+      this.tokens.push(new Tag(token.kind, token.name, { ...token.attrs }, token.selfClosing));
     } else if (token instanceof CharacterToken) {
       this.tokens.push(new CharacterToken(token.data));
     } else if (token instanceof CommentToken) {
@@ -114,7 +123,12 @@ class RecordingSink {
       const d = token.doctype;
       this.tokens.push(
         new DoctypeToken(
-          new Doctype({ name: d.name, publicId: d.publicId, systemId: d.systemId, forceQuirks: d.forceQuirks }),
+          new Doctype({
+            name: d.name,
+            publicId: d.publicId,
+            systemId: d.systemId,
+            forceQuirks: d.forceQuirks,
+          }),
         ),
       );
     } else if (token instanceof EOFToken) {
@@ -130,7 +144,12 @@ class RecordingSink {
   }
 }
 
-function isTestSelected(fileRel: string, filename: string, index: number, specs: string[]): boolean {
+function isTestSelected(
+  fileRel: string,
+  filename: string,
+  index: number,
+  specs: string[],
+): boolean {
   if (!specs.length) return true;
 
   for (const spec of specs) {
@@ -138,7 +157,10 @@ function isTestSelected(fileRel: string, filename: string, index: number, specs:
       const [filePart, indicesPart] = spec.split(":", 2);
       if (!fileRel.includes(filePart) && !filename.includes(filePart)) continue;
       const wanted = new Set(
-        indicesPart.split(",").filter(Boolean).map((s) => Number.parseInt(s, 10)),
+        indicesPart
+          .split(",")
+          .filter(Boolean)
+          .map((s) => Number.parseInt(s, 10)),
       );
       return wanted.has(index);
     }
@@ -150,7 +172,10 @@ function isTestSelected(fileRel: string, filename: string, index: number, specs:
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
-  const testsDir = path.resolve(REPO_ROOT, args.testsDir || process.env.HTML5LIB_TESTS_DIR || "html5lib-tests");
+  const testsDir = path.resolve(
+    REPO_ROOT,
+    args.testsDir || process.env.HTML5LIB_TESTS_DIR || "html5lib-tests",
+  );
   const tokenizerDir = path.join(testsDir, "tokenizer");
 
   const entries = await readdir(tokenizerDir, { withFileTypes: true });

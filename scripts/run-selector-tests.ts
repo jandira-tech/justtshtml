@@ -203,10 +203,7 @@ results.push(
     const root = getEmptyDoc();
     const out = query(root, "div:empty");
     assert.equal(out.length, 2);
-    assert.deepEqual(
-      out.map((n: any) => n.attrs.class).sort(),
-      ["empty", "whitespace"],
-    );
+    assert.deepEqual(out.map((n: any) => n.attrs.class).sort(), ["empty", "whitespace"]);
   }),
 );
 
@@ -243,7 +240,9 @@ if (failed.length) {
     console.error(`selector FAIL: ${r.name}`);
     console.error(r.err);
   }
-  console.error(`selector: ${results.length - failed.length}/${results.length} passed, ${failed.length} failed`);
+  console.error(
+    `selector: ${results.length - failed.length}/${results.length} passed, ${failed.length} failed`,
+  );
   process.exit(1);
 }
 

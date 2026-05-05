@@ -94,7 +94,9 @@ if (failed.length) {
     console.error(`stream FAIL: ${r.name}`);
     console.error(r.err);
   }
-  console.error(`stream: ${results.length - failed.length}/${results.length} passed, ${failed.length} failed`);
+  console.error(
+    `stream: ${results.length - failed.length}/${results.length} passed, ${failed.length} failed`,
+  );
   process.exit(1);
 }
 

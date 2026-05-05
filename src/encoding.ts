@@ -375,7 +375,10 @@ function prescanForMetaCharset(data: any) {
   return null;
 }
 
-export function sniffHTMLEncoding(data: any, { transportEncoding = null } = {}) {
+export function sniffHTMLEncoding(
+  data: any,
+  { transportEncoding = null }: { transportEncoding?: string | null } = {},
+) {
   const transport = normalizeEncodingLabel(transportEncoding);
   if (transport) return { encoding: transport, bomLength: 0 };
 
@@ -388,7 +391,10 @@ export function sniffHTMLEncoding(data: any, { transportEncoding = null } = {}) 
   return { encoding: "windows-1252", bomLength: 0 };
 }
 
-export function decodeHTML(data: any, { transportEncoding = null } = {}) {
+export function decodeHTML(
+  data: any,
+  { transportEncoding = null }: { transportEncoding?: string | null } = {},
+) {
   const { encoding, bomLength } = sniffHTMLEncoding(data, { transportEncoding });
 
   let enc = encoding;

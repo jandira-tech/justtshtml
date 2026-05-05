@@ -28,7 +28,7 @@ test("JustHTML parses a basic document", () => {
 });
 
 test("stream emits a coalesced event sequence", () => {
-  const events = Array.from(stream("<div class=\"c\">Hi <b>there</b></div>"));
+  const events = Array.from(stream('<div class="c">Hi <b>there</b></div>'));
   expect(events).toEqual([
     ["start", ["div", { class: "c" }]],
     ["text", "Hi "],

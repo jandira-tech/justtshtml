@@ -81,6 +81,11 @@ export class TokenizerOpts {
     initialRawtextTag = null,
     discardBom = true,
     xmlCoercion = false,
+  }: {
+    initialState?: number | null;
+    initialRawtextTag?: string | null;
+    discardBom?: boolean;
+    xmlCoercion?: boolean;
   } = {}) {
     this.initialState = initialState;
     this.initialRawtextTag = initialRawtextTag;
@@ -1057,7 +1062,7 @@ export class Tokenizer {
       // Treat as bogus comment in HTML context, preserving "[CDATA[" prefix.
       this._emitError("cdata-in-html-content");
       this.currentComment.length = 0;
-      this.currentComment.push(..."[CDATA[");
+      this.currentComment.push(..."[CDATA[".split(""));
       this.state = Tokenizer.BOGUS_COMMENT;
       return false;
     }

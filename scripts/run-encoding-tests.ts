@@ -114,7 +114,10 @@ async function listDatFiles(dir: string): Promise<string[]> {
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
-  const testsDir = path.resolve(REPO_ROOT, args.testsDir || process.env.HTML5LIB_TESTS_DIR || "html5lib-tests");
+  const testsDir = path.resolve(
+    REPO_ROOT,
+    args.testsDir || process.env.HTML5LIB_TESTS_DIR || "html5lib-tests",
+  );
   const encodingDir = path.join(testsDir, "encoding");
 
   const testFiles = await listDatFiles(encodingDir);

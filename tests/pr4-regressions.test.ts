@@ -47,7 +47,7 @@ describe("PR #4 justjshtml remediation regressions", () => {
 
     expect(html).toContain("<meta charset=utf-8>");
     expect(html).toContain("<body id=main>roundtrip body");
-    expect(html.match(/<meta charset=utf-8>/g)).toHaveLength(1);
+    expect(html?.match(/<meta charset=utf-8>/g)).toHaveLength(1);
   });
 
   test("inject_meta_charset without an encoding serializes the original tokens", () => {

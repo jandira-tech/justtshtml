@@ -155,7 +155,9 @@ if (failed.length) {
     console.error(`markdown FAIL: ${r.name}`);
     console.error(r.err);
   }
-  console.error(`markdown: ${results.length - failed.length}/${results.length} passed, ${failed.length} failed`);
+  console.error(
+    `markdown: ${results.length - failed.length}/${results.length} passed, ${failed.length} failed`,
+  );
   process.exit(1);
 }
 

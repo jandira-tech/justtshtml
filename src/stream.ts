@@ -66,7 +66,16 @@ class StreamSink {
   }
 }
 
-export function* stream(html: any, { encoding = null, tokenizerOpts = null } = {}) {
+export function* stream(
+  html: any,
+  {
+    encoding = null,
+    tokenizerOpts = null,
+  }: {
+    encoding?: string | null;
+    tokenizerOpts?: TokenizerOpts | Record<string, unknown> | null;
+  } = {},
+) {
   let input = html;
   if (input == null) input = "";
 

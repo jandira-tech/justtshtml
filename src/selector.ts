@@ -25,7 +25,7 @@ const TokenType = {
 class Token {
   type: any;
   value: any;
-  constructor(type: any, value = null) {
+  constructor(type: any, value: any = null) {
     this.type = type;
     this.value = value;
   }
@@ -290,7 +290,7 @@ class SimpleSelector {
 
 class CompoundSelector {
   selectors: any;
-  constructor(selectors = []) {
+  constructor(selectors: any[] = []) {
     this.selectors = selectors;
   }
 }
@@ -304,7 +304,7 @@ class ComplexSelector {
 
 class SelectorList {
   selectors: any;
-  constructor(selectors = []) {
+  constructor(selectors: any[] = []) {
     this.selectors = selectors;
   }
 }
@@ -449,7 +449,7 @@ function isElementNode(node: any) {
 }
 
 class SelectorMatcher {
-  matches(node: any, selector: any) {
+  matches(node: any, selector: any): boolean {
     if (selector instanceof SelectorList)
       return selector.selectors.some((sel: any) => this.matches(node, sel));
     if (selector instanceof ComplexSelector) return this._matchesComplex(node, selector);
@@ -512,7 +512,7 @@ class SelectorMatcher {
     return compound.selectors.every((simple: any) => this._matchesSimple(node, simple));
   }
 
-  _matchesSimple(node: any, selector: any) {
+  _matchesSimple(node: any, selector: any): boolean {
     if (!isElementNode(node)) return false;
 
     if (selector.type === SimpleSelector.TYPE_UNIVERSAL) return true;
@@ -554,7 +554,7 @@ class SelectorMatcher {
 
     const op = selector.operator;
     const value = selector.value;
-    const s = attrValue == null ? "" : String(attrValue);
+    const s = attrValue == null ? "" : String(attrValue as string);
 
     if (op === "=") return s === value;
     if (op === "~=") return (s ? s.split(/\s+/).filter(Boolean) : []).includes(value);
@@ -566,7 +566,7 @@ class SelectorMatcher {
     return false;
   }
 
-  _matchesPseudo(node: any, selector: any) {
+  _matchesPseudo(node: any, selector: any): boolean {
     const name = String(selector.name || "").toLowerCase();
 
     if (name === "first-child") return this._isFirstChild(node);

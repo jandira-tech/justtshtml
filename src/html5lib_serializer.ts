@@ -5,7 +5,7 @@ function attrListToDict(attrs: any) {
   if (!Array.isArray(attrs) && typeof attrs === "object") return attrs;
   if (!Array.isArray(attrs)) return {};
 
-  const out = {};
+  const out: Record<string, any> = {};
   for (const entry of attrs) {
     if (!entry || typeof entry !== "object") continue;
     const name = entry.name;
@@ -420,7 +420,7 @@ export function serializeSerializerTokenStream(tokens: any, options = {}) {
   const parts = [];
   let rawtext = null;
 
-  const openElements = [];
+  const openElements: string[] = [];
   // @ts-expect-error TS(2339) FIXME: Property 'strip_whitespace' does not exist on type... Remove this comment to see the full error message
   const stripWs = Boolean(options.strip_whitespace);
   // @ts-expect-error TS(2339) FIXME: Property 'escape_rcdata' does not exist on type '{... Remove this comment to see the full error message
